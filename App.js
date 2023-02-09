@@ -1,10 +1,8 @@
-import RegistrationScreen from "./components/RegistrationScreen/RegistrationScreen";
-import LoginScreen from "./components/LoginScreen/LoginScreen";
+import RegistrationScreen from "./Screens/components/RegistrationScreen/RegistrationScreen";
 
 export default function App() {
   return (
     <>
-      {/* <LoginScreen /> */}
       <RegistrationScreen />
     </>
   );
