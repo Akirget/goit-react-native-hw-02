@@ -43,12 +43,7 @@ export default function RegistrationScreen() {
                   left: (windowWidth - 120) / 2,
                 }}
               ></View>
-              <TouchableOpacity
-                style={{
-                  ...styles.addButton,
-                  left: windowWidth / 2 + 48,
-                }}
-              >
+              <TouchableOpacity style={addButton}>
                 <Add />
               </TouchableOpacity>
             </View>
