@@ -3,23 +3,24 @@ import { StyleSheet, Text, View, ImageBackground } from "react-native";
 export default function RegistrationScreen() {
   return (
     <View styles={styles.container}>
-      {/* <Text>asdfasdf</Text> */}
-      {/* <ImageBackground
+      <Text>asdfasdf</Text>
+      <ImageBackground
         styles={styles.bg}
         source={require("../../assets/images/bgImage.png")}
       >
         <Text>
           dsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsfdsf
         </Text>
-      </ImageBackground> */}
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    fontSize: 24,
     flex: 1,
-    backgroundColor: "green",
+    color: "green",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
