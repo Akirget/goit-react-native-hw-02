@@ -72,7 +72,7 @@ const LoginScreen = () => {
 
   const [fonts] = useFonts({
     RobotoBold: require("../../../assets/fonts/Roboto-Bold.ttf"),
-    Roboto: require("../../../assets/fonts/Roboto-Regular.ttf"),
+    RobotoRegular: require("../../../assets/fonts/Roboto-Regular.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
