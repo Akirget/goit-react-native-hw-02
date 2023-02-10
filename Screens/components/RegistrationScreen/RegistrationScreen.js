@@ -22,13 +22,13 @@ import Add from "../../../assets/images/add.svg";
 
 const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
-  const [isFocusedLogin, setIsFocusedLogin] = useState(false);
+  const [focusLogin, setFocusLogin] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+  const [focusEmail, setIsFocusEmail] = useState(false);
 
   const [password, setPassword] = useState("");
-  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+  const [focusPassword, setFocusPassword] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const [phoneWidth, setPhoneWidth] = useState(Dimensions.get("window").width);
@@ -51,7 +51,7 @@ const RegistrationScreen = () => {
 
   const loginSave = (login) => setLogin(login);
   const emailSave = (email) => setEmail(email);
-  const passwprdSave = (password) => setPassword(password);
+  const passwordSave = (password) => setPassword(password);
 
   const onLogin = () => {
     if (!login.trim() || !email.trim() || !password.trim()) {
@@ -59,14 +59,14 @@ const RegistrationScreen = () => {
       return;
     }
     Alert.alert(`${login}, успешно зарегистрированы!`);
-    console.log(login, email, password);
+    console.log("login" - login, "email" - email, "password" - password);
     setLogin("");
     setEmail("");
     setPassword("");
     Keyboard.dismiss();
   };
 
-  const keyboardHide = () => {
+  const keyboardIsHidden = () => {
     Keyboard.dismiss();
   };
 
@@ -92,21 +92,19 @@ const RegistrationScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <TouchableWithoutFeedback onPress={keyboardHide}>
+      <TouchableWithoutFeedback onPress={keyboardIsHidden}>
         <View style={styles.containerFlex}>
           <ImageBackground
-            style={{
-              ...styles.imageBG,
-              width: phoneWidth,
-              height: phoneHeight,
-            }}
+            style={styles.backgroundImg}
             source={require("../../../assets/images/bgImage.png")}
           >
             <ScrollView>
               <View
                 style={{
                   ...styles.wrapper,
-                  marginTop: phoneWidth > 400 ? 200 : 400,
+                  width: phoneWidth,
+
+                  marginTop: phoneWidth > 400 ? 200 : 300,
                 }}
               >
                 <View
@@ -118,7 +116,7 @@ const RegistrationScreen = () => {
                 <TouchableOpacity
                   style={{
                     ...styles.addSvg,
-                    left: phoneWidth / 2 + 48,
+                    right: phoneWidth / 2 - 70,
                   }}
                 >
                   <Add />
@@ -128,10 +126,10 @@ const RegistrationScreen = () => {
                   <TextInput
                     style={{
                       ...styles.input,
-                      borderColor: isFocusedLogin ? "#FF6C00" : "#E8E8E8",
+                      borderColor: focusLogin ? "#FF6C00" : "#E8E8E8",
                     }}
-                    onFocus={() => setIsFocusedLogin(true)}
-                    onBlur={() => setIsFocusedLogin(false)}
+                    onFocus={() => setFocusLogin(true)}
+                    onBlur={() => setFocusLogin(false)}
                     value={login}
                     placeholder="Логин"
                     cursorColor={"#BDBDBD"}
@@ -141,10 +139,10 @@ const RegistrationScreen = () => {
                   <TextInput
                     style={{
                       ...styles.input,
-                      borderColor: isFocusedEmail ? "#FF6C00" : "#E8E8E8",
+                      borderColor: focusEmail ? "#FF6C00" : "#E8E8E8",
                     }}
-                    onFocus={() => setIsFocusedEmail(true)}
-                    onBlur={() => setIsFocusedEmail(false)}
+                    onFocus={() => setIsFocusEmail(true)}
+                    onBlur={() => setIsFocusEmail(false)}
                     value={email}
                     placeholder="Адрес электронной почты"
                     cursorColor={"#BDBDBD"}
@@ -155,16 +153,16 @@ const RegistrationScreen = () => {
                   <TextInput
                     style={{
                       ...styles.input,
-                      borderColor: isFocusedPassword ? "#FF6C00" : "#E8E8E8",
+                      borderColor: focusPassword ? "#FF6C00" : "#E8E8E8",
                     }}
-                    onFocus={() => setIsFocusedPassword(true)}
-                    onBlur={() => setIsFocusedPassword(false)}
+                    onFocus={() => setFocusPassword(true)}
+                    onBlur={() => setFocusPassword(false)}
                     value={password}
                     placeholder="Пароль"
                     cursorColor={"#BDBDBD"}
                     placeholderTextColor={"#BDBDBD"}
                     secureTextEntry={isPasswordHidden}
-                    onChangeText={passwprdSave}
+                    onChangeText={passwordSave}
                   ></TextInput>
                   <TouchableOpacity
                     style={styles.isPassword}
@@ -203,38 +201,45 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  imageBG: {
+  backgroundImg: {
     flex: 1,
-    resizeMode: "cover",
     justifyContent: "flex-end",
+
+    resizeMode: "cover",
   },
   wrapper: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "flex-end",
+    height: 550,
     backgroundColor: "#FFFFFF",
+
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    marginTop: 270,
   },
 
   imageWrap: {
-    top: -60,
     position: "absolute",
+    top: -60,
+
     width: 120,
     height: 120,
+
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
   },
   addSvg: {
     position: "absolute",
-    top: 21,
+    top: 20,
+    right: 20,
     width: 25,
     height: 25,
   },
   title: {
-    marginTop: 92,
-    marginBottom: 33,
     textAlign: "center",
+
+    marginBottom: 30,
+
     fontSize: 30,
     lineHeight: 35,
     color: "#212121",
@@ -256,7 +261,7 @@ const styles = StyleSheet.create({
   isPassword: {
     position: "absolute",
     right: 0,
-    bottom: 205,
+    bottom: 253,
     paddingRight: 16,
   },
   isPasswordShow: {
@@ -267,8 +272,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    height: 51,
-    marginTop: 27,
+    height: 50,
+    marginTop: 40,
     paddingVertical: 16,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
@@ -281,8 +286,8 @@ const styles = StyleSheet.create({
     fontFamily: "RobotoBold",
   },
   footer: {
-    marginTop: 16,
-    marginBottom: 60,
+    marginTop: 15,
+    marginBottom: 100,
     textAlign: "center",
     color: "#1B4371",
     fontFamily: "RobotoRegular",
