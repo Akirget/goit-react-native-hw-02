@@ -14,9 +14,12 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
+
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+
 import Add from "../../../assets/images/add.svg";
+
 const RegistrationScreen = () => {
   const [login, setLogin] = useState("");
   const [isFocusedLogin, setIsFocusedLogin] = useState(false);
@@ -28,23 +31,22 @@ const RegistrationScreen = () => {
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
-  const [windowWidth, setWindowWidth] = useState(
-    Dimensions.get("window").width
-  );
-  const [windowHeight, setWindowHeight] = useState(
+  const [phoneWidth, setPhoneWidth] = useState(Dimensions.get("window").width);
+  const [phoneHeight, setPhoneHeight] = useState(
     Dimensions.get("window").height
   );
 
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width;
-      setWindowWidth(width);
-      const height = Dimensions.get("window").height;
-      setWindowHeight(height);
-    };
-    Dimensions.addEventListener("change", onChange);
+      setPhoneWidth(width);
 
-    return () => Dimensions.removeEventListener("change", onChange);
+      const height = Dimensions.get("window").height;
+      setPhoneHeight(height);
+    };
+    const addListener = Dimensions.addEventListener("change", onChange);
+
+    return () => addListener.remove();
   }, []);
 
   const loginSave = (login) => setLogin(login);
@@ -56,7 +58,7 @@ const RegistrationScreen = () => {
       Alert.alert(`Все поля должны быть заполнены!`);
       return;
     }
-    Alert.alert(`${login}, успешно зарегистрирован!`);
+    Alert.alert(`${login}, успешно зарегистрированы!`);
     console.log(login, email, password);
     setLogin("");
     setEmail("");
@@ -70,10 +72,11 @@ const RegistrationScreen = () => {
 
   const [fonts] = useFonts({
     RobotoBold: require("../../../assets/fonts/Roboto-Bold.ttf"),
-    Roboto: require("../../../assets/fonts/Roboto-Regular.ttf"),
+    RobotoRegular: require("../../../assets/fonts/Roboto-Regular.ttf"),
+    // RobotoMono: require("../../../assets/fonts/RobotoMono-Italic-VariableFont_wght.ttf"),
   });
 
-  const onLayout = useCallback(async () => {
+  const onLayoutRootView = useCallback(async () => {
     if (fonts) {
       await SplashScreen.hideAsync();
     }
@@ -85,19 +88,17 @@ const RegistrationScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      onLayout={onLayout}
+      onLayout={onLayoutRootView}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={keyboardHide}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <View style={styles.containerFlex}>
           <ImageBackground
             style={{
               ...styles.imageBG,
-              width: windowWidth,
-              height: windowHeight,
+              width: phoneWidth,
+              height: phoneHeight,
             }}
             source={require("../../../assets/images/bgImage.png")}
           >
@@ -105,33 +106,29 @@ const RegistrationScreen = () => {
               <View
                 style={{
                   ...styles.wrapper,
-                  width: windowWidth,
-                  marginTop: windowWidth > 500 ? 100 : 263,
+                  marginTop: phoneWidth > 400 ? 200 : 400,
                 }}
               >
                 <View
                   style={{
-                    ...styles.imageThumb,
-                    left: (windowWidth - 120) / 2,
+                    ...styles.imageWrap,
+                    left: (phoneWidth - 120) / 2,
                   }}
                 ></View>
                 <TouchableOpacity
                   style={{
-                    ...styles.addButton,
-                    left: windowWidth / 2 + 48,
+                    ...styles.addSvg,
+                    left: phoneWidth / 2 + 48,
                   }}
                 >
                   <Add />
                 </TouchableOpacity>
-                <View style={{ width: windowWidth - 16 * 2 }}>
-                  <Text style={{ ...styles.title, fontFamily: "RobotoBold" }}>
-                    Регистрация
-                  </Text>
+                <View style={{ width: phoneWidth - 16 * 2 }}>
+                  <Text style={styles.title}>Регистрация</Text>
                   <TextInput
                     style={{
                       ...styles.input,
                       borderColor: isFocusedLogin ? "#FF6C00" : "#E8E8E8",
-                      fontFamily: "Roboto",
                     }}
                     onFocus={() => setIsFocusedLogin(true)}
                     onBlur={() => setIsFocusedLogin(false)}
@@ -145,12 +142,11 @@ const RegistrationScreen = () => {
                     style={{
                       ...styles.input,
                       borderColor: isFocusedEmail ? "#FF6C00" : "#E8E8E8",
-                      fontFamily: "Roboto",
                     }}
                     onFocus={() => setIsFocusedEmail(true)}
                     onBlur={() => setIsFocusedEmail(false)}
                     value={email}
-                    placeholder="EmАдрес электронной почты"
+                    placeholder="Адрес электронной почты"
                     cursorColor={"#BDBDBD"}
                     placeholderTextColor={"#BDBDBD"}
                     onChangeText={emailSave}
@@ -160,7 +156,6 @@ const RegistrationScreen = () => {
                     style={{
                       ...styles.input,
                       borderColor: isFocusedPassword ? "#FF6C00" : "#E8E8E8",
-                      fontFamily: "Roboto",
                     }}
                     onFocus={() => setIsFocusedPassword(true)}
                     onBlur={() => setIsFocusedPassword(false)}
@@ -172,31 +167,20 @@ const RegistrationScreen = () => {
                     onChangeText={passwprdSave}
                   ></TextInput>
                   <TouchableOpacity
-                    style={styles.showPassword}
+                    style={styles.isPassword}
                     onPress={() =>
                       setIsPasswordHidden((prevState) => !prevState)
                     }
                   >
-                    <Text
-                      style={{
-                        ...styles.textShowPassword,
-                        fontFamily: "Roboto",
-                      }}
-                    >
+                    <Text style={styles.isPasswordShow}>
                       {isPasswordHidden ? "Показать" : "Скрыть"}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.button} onPress={onLogin}>
-                    <Text
-                      style={{ ...styles.textButton, fontFamily: "Roboto" }}
-                    >
-                      Зарегистрироваться
-                    </Text>
+                    <Text style={styles.buttonText}>Зарегистрироваться</Text>
                   </TouchableOpacity>
                   <TouchableOpacity>
-                    <Text style={{ ...styles.link, fontFamily: "Roboto" }}>
-                      Уже есть аккаунт? Войти
-                    </Text>
+                    <Text style={styles.footer}>Уже есть аккаунт? Войти</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -214,9 +198,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerFlex: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   imageBG: {
     flex: 1,
     resizeMode: "cover",
+    justifyContent: "flex-end",
   },
   wrapper: {
     flex: 1,
@@ -224,9 +214,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    marginTop: 270,
   },
 
-  imageThumb: {
+  imageWrap: {
     top: -60,
     position: "absolute",
     width: 120,
@@ -234,7 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
   },
-  addButton: {
+  addSvg: {
     position: "absolute",
     top: 21,
     width: 25,
@@ -247,6 +238,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 35,
     color: "#212121",
+    fontFamily: "RobotoBold",
   },
   input: {
     marginBottom: 16,
@@ -257,19 +249,21 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     borderRadius: 8,
+    fontFamily: "RobotoRegular",
 
     color: "#212121",
   },
-  showPassword: {
+  isPassword: {
     position: "absolute",
     right: 0,
     bottom: 205,
     paddingRight: 16,
   },
-  textShowPassword: {
+  isPasswordShow: {
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
+    fontFamily: "RobotoRegular",
   },
 
   button: {
@@ -279,16 +273,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF6C00",
     borderRadius: 100,
   },
-  textButton: {
+  buttonText: {
     fontSize: 16,
     lineHeight: 19,
     textAlign: "center",
     color: "#FFFFFF",
+    fontFamily: "RobotoBold",
   },
-  link: {
+  footer: {
     marginTop: 16,
     marginBottom: 60,
     textAlign: "center",
     color: "#1B4371",
+    fontFamily: "RobotoRegular",
   },
 });
